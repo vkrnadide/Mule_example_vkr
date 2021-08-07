@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="102b6cc4-8910-429c-a57c-b4f97f66f5e4" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="helloworldbodyFlow" doc:id="02745367-4dc1-42f3-b9d4-cd677cfd54e8" >
+		<http:listener doc:name="HelloWorldBody" doc:id="9120bb59-bb46-4418-ab27-04d7efbf6639" config-ref="HTTP_Listener_config" path="/HelloWorldBody"/>
+		<logger level="INFO" doc:name="DataFromBody_test" doc:id="11f440a7-2cb7-4f6d-b911-bbf1c2797086" message="DataFromBodyExample :: #[payload]"/>
+		<logger level="INFO" doc:name="Logger1" doc:id="7e46baf3-575e-4934-bbfc-8515b6e26df3" />
+		<ee:transform doc:name="Transform Message" doc:id="e5845e7d-ceb2-4f4b-be5f-06dd3aaecf57" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{"status" : "Hello this is " ++  payload.fullname  ++ " " 
+		++"data from body Nadide787989"
+	}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
